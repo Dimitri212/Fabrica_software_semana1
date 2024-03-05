@@ -1,0 +1,175 @@
+/* Academia_Logico: */
+
+CREATE TABLE Academia (
+    Nome String,
+    CNPJ Number PRIMARY KEY
+);
+
+CREATE TABLE Aluno (
+    Nome String,
+    CPF Number PRIMARY KEY,
+    Data_de_Nascimento Date,
+    Sexo String
+);
+
+CREATE TABLE Instrutor (
+    Nome String,
+    CPF Number PRIMARY KEY,
+    CREF Number,
+    Sexo String,
+    Data_de_Nascimento Date
+);
+
+CREATE TABLE Endereco (
+    CEP number PRIMARY KEY,
+    Logradouro String,
+    Bairro String,
+    Cidade String,
+    Numero number
+);
+
+CREATE TABLE Contato (
+    Celular_1 Number PRIMARY KEY,
+    Celular_2 Number,
+    Telefone Number,
+    Email String,
+    Whatsapp Number
+);
+
+CREATE TABLE Fornecedor (
+    Nome String,
+    Produto String,
+    CNPJ Number PRIMARY KEY
+);
+
+CREATE TABLE Equipamentos (
+    Nome_do_aparelho String,
+    Data_de_Aquisicao Date,
+    Id_do_equipamento Number PRIMARY KEY
+);
+
+CREATE TABLE Contacta_Contato_Academia_Fornecedor_Instrutor_Aluno (
+    fk_Contato_Celular_1 Number,
+    fk_Academia_CNPJ Number,
+    fk_Fornecedor_CNPJ Number,
+    fk_Instrutor_CPF Number,
+    fk_Aluno_CPF Number
+);
+
+CREATE TABLE Fornece (
+    fk_Academia_CNPJ Number,
+    fk_Fornecedor_CNPJ Number
+);
+
+CREATE TABLE Localiza_Endereco_Fornecedor_Academia_Instrutor_Aluno (
+    fk_Endereco_CEP number,
+    fk_Fornecedor_CNPJ Number,
+    fk_Academia_CNPJ Number,
+    fk_Instrutor_CPF Number,
+    fk_Aluno_CPF Number
+);
+
+CREATE TABLE Ensina (
+    fk_Instrutor_CPF Number,
+    fk_Aluno_CPF Number
+);
+
+CREATE TABLE Utiliza (
+    fk_Aluno_CPF Number,
+    fk_Equipamentos_Id_do_equipamento Number
+);
+
+CREATE TABLE Mantem (
+    fk_Academia_CNPJ Number,
+    fk_Equipamentos_Id_do_equipamento Number
+);
+ 
+ALTER TABLE Contacta_Contato_Academia_Fornecedor_Instrutor_Aluno ADD CONSTRAINT FK_Contacta_Contato_Academia_Fornecedor_Instrutor_Aluno_1
+    FOREIGN KEY (fk_Contato_Celular_1)
+    REFERENCES Contato (Celular_1)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Contacta_Contato_Academia_Fornecedor_Instrutor_Aluno ADD CONSTRAINT FK_Contacta_Contato_Academia_Fornecedor_Instrutor_Aluno_2
+    FOREIGN KEY (fk_Academia_CNPJ)
+    REFERENCES Academia (CNPJ)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Contacta_Contato_Academia_Fornecedor_Instrutor_Aluno ADD CONSTRAINT FK_Contacta_Contato_Academia_Fornecedor_Instrutor_Aluno_3
+    FOREIGN KEY (fk_Fornecedor_CNPJ)
+    REFERENCES Fornecedor (CNPJ)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Contacta_Contato_Academia_Fornecedor_Instrutor_Aluno ADD CONSTRAINT FK_Contacta_Contato_Academia_Fornecedor_Instrutor_Aluno_4
+    FOREIGN KEY (fk_Instrutor_CPF)
+    REFERENCES Instrutor (CPF)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Contacta_Contato_Academia_Fornecedor_Instrutor_Aluno ADD CONSTRAINT FK_Contacta_Contato_Academia_Fornecedor_Instrutor_Aluno_5
+    FOREIGN KEY (fk_Aluno_CPF)
+    REFERENCES Aluno (CPF)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Fornece ADD CONSTRAINT FK_Fornece_1
+    FOREIGN KEY (fk_Academia_CNPJ)
+    REFERENCES Academia (CNPJ)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Fornece ADD CONSTRAINT FK_Fornece_2
+    FOREIGN KEY (fk_Fornecedor_CNPJ)
+    REFERENCES Fornecedor (CNPJ)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Localiza_Endereco_Fornecedor_Academia_Instrutor_Aluno ADD CONSTRAINT FK_Localiza_Endereco_Fornecedor_Academia_Instrutor_Aluno_1
+    FOREIGN KEY (fk_Endereco_CEP)
+    REFERENCES Endereco (CEP)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Localiza_Endereco_Fornecedor_Academia_Instrutor_Aluno ADD CONSTRAINT FK_Localiza_Endereco_Fornecedor_Academia_Instrutor_Aluno_2
+    FOREIGN KEY (fk_Fornecedor_CNPJ)
+    REFERENCES Fornecedor (CNPJ)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Localiza_Endereco_Fornecedor_Academia_Instrutor_Aluno ADD CONSTRAINT FK_Localiza_Endereco_Fornecedor_Academia_Instrutor_Aluno_3
+    FOREIGN KEY (fk_Academia_CNPJ)
+    REFERENCES Academia (CNPJ)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Localiza_Endereco_Fornecedor_Academia_Instrutor_Aluno ADD CONSTRAINT FK_Localiza_Endereco_Fornecedor_Academia_Instrutor_Aluno_4
+    FOREIGN KEY (fk_Instrutor_CPF)
+    REFERENCES Instrutor (CPF)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Localiza_Endereco_Fornecedor_Academia_Instrutor_Aluno ADD CONSTRAINT FK_Localiza_Endereco_Fornecedor_Academia_Instrutor_Aluno_5
+    FOREIGN KEY (fk_Aluno_CPF)
+    REFERENCES Aluno (CPF)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Ensina ADD CONSTRAINT FK_Ensina_1
+    FOREIGN KEY (fk_Instrutor_CPF)
+    REFERENCES Instrutor (CPF)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Ensina ADD CONSTRAINT FK_Ensina_2
+    FOREIGN KEY (fk_Aluno_CPF)
+    REFERENCES Aluno (CPF)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Utiliza ADD CONSTRAINT FK_Utiliza_1
+    FOREIGN KEY (fk_Aluno_CPF)
+    REFERENCES Aluno (CPF)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Utiliza ADD CONSTRAINT FK_Utiliza_2
+    FOREIGN KEY (fk_Equipamentos_Id_do_equipamento)
+    REFERENCES Equipamentos (Id_do_equipamento)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Mantem ADD CONSTRAINT FK_Mantem_1
+    FOREIGN KEY (fk_Academia_CNPJ)
+    REFERENCES Academia (CNPJ)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Mantem ADD CONSTRAINT FK_Mantem_2
+    FOREIGN KEY (fk_Equipamentos_Id_do_equipamento)
+    REFERENCES Equipamentos (Id_do_equipamento)
+    ON DELETE SET NULL;
